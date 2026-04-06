@@ -82,7 +82,6 @@ Stores additional information specific to thrifted items, such as:
 ## Files in This Repository
 
 * `er-diagram.png` – Exported image of the ER diagram
-* `er-diagram.pdf` – PDF version of the ER diagram
 * `README.md` – Project documentation
 
 ---
