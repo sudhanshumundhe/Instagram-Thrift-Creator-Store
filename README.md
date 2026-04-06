@@ -1,94 +1,156 @@
-# Instagram Thrift Creator Store – ER Diagram
-
-The database design models how a small creator store manages products, customers, orders, payments, and shipping. The system supports both thrifted products (unique pieces) and handmade products (multiple units).
+# Instagram Thrift & Handmade Store – ER Diagram
 
 ## Overview
 
-This project contains the **Entity Relationship Diagram (ERD)** for a small Instagram-based store that sells **thrifted fashion items** and **handmade products**. The database design helps the business manage products, customers, orders, payments, and shipping information.
+This project contains the **Entity Relationship Diagram (ERD)** for a small Instagram-based store that sells **thrifted fashion items** and **handmade products**.
+The database is designed to help the store owner manage **customers, products, orders, payments, and shipping details** efficiently.
 
-The goal of this design is to support the workflow of a small online store that initially receives orders through **Instagram DMs and WhatsApp**.
+The system supports both:
+
+* **Thrifted items** (usually unique pieces)
+* **Handmade products** (which may have multiple units in stock)
 
 ---
 
-## Entities Included
+## Database Entities
 
-### Customers
+### 1. Customers
 
-Stores customer information such as:
+Stores customer information and address details.
 
-* username
-* email
-* phone
-* address details
+**Attributes**
 
-### Products
+* `customer_id` (PK)
+* `user_name`
+* `email`
+* `phone`
+* `country`
+* `state`
+* `city`
+* `building_number`
 
-Stores product details including:
+---
 
-* product type (thrifted or handmade)
-* category (men, women, child)
-* size
-* color
-* condition
-* price
-* stock quantity
-
-### Orders
+### 2. Orders
 
 Represents orders placed by customers.
 
-### Order Items
+**Attributes**
 
-A **junction table** that connects orders and products, allowing one order to contain multiple products.
+* `order_id` (PK)
+* `customer_id` (FK)
+* `order_date`
+* `status`
+* `total_amount`
 
-### Payments
+---
 
-Stores payment information such as:
+### 3. Order Items
 
-* payment method
-* payment status
-* transaction id
-* payment date
+Acts as a **junction table** between orders and products.
+It allows one order to contain multiple products.
 
-### Shipping
+**Attributes**
 
-Tracks delivery information including:
+* `order_item_id` (PK)
+* `order_id` (FK)
+* `product_id` (FK)
+* `quantity`
+* `price`
 
-* shipping status
-* shipping address
-* tracking number
-* shipped and delivered dates
+---
 
-### Thrifted Products
+### 4. Products
 
-Stores additional information specific to thrifted items, such as:
+Stores product details for both thrifted and handmade items.
 
-* original brand
-* purchase source
+**Attributes**
+
+* `product_id` (PK)
+* `thrift_category_id`
+* `type` (thrifted / handmade)
+* `category` (men / women / child)
+* `size`
+* `color`
+* `condition`
+* `price`
+* `stock_quantity`
+* `created_at`
+* `updated_at`
+
+---
+
+### 5. Shipping
+
+Stores shipping and delivery information for orders.
+
+**Attributes**
+
+* `shipping_id` (PK)
+* `order_id` (FK)
+* `shipping_address`
+* `shipping_status`
+* `tracking_number`
+* `shipped_date`
+* `delivered_date`
+
+---
+
+### 6. Payments
+
+Stores payment details related to orders.
+
+**Attributes**
+
+* `payment_id` (PK)
+* `order_id` (FK)
+* `payment_method`
+* `payment_status`
+* `amount`
+* `transaction_id`
+* `payment_date`
+
+---
+
+### 7. Thrifted Products
+
+Stores additional details for thrifted items.
+
+**Attributes**
+
+* `thrifted_id` (PK)
+* `product_id` (FK)
+* `original_brand`
+* `purchase_source`
 
 ---
 
 ## Relationships
 
-* A **customer can place multiple orders**.
-* An **order can contain multiple products**.
-* Products and orders are connected through the **order_items** table.
-* Each order can have **payment details**.
-* Each order can have **shipping information**.
-* If a product is thrifted, it may have additional data in the **thrifted_products** table.
+* A **customer can place multiple orders**
+* An **order can contain multiple products**
+* Orders and products are connected using **order_items**
+* Each order has **shipping information**
+* Each order has **payment details**
+* Some products may have additional data stored in **thrifted_products**
 
 ---
 
-## Files in This Repository
+## Entity Relationships
 
-* `er-diagram.png` – Exported image of the ER diagram
-* `README.md` – Project documentation
+* `customers.customer_id < orders.customer_id`
+* `orders.order_id < order_items.order_id`
+* `products.product_id < order_items.product_id`
+* `orders.order_id < shipping.order_id`
+* `orders.order_id < payments.order_id`
+* `products.product_id < thrifted_products.product_id`
 
 ---
 
-## Purpose
+## Purpose of the Project
 
-This ER diagram demonstrates how a database can be designed to manage an online thrift and handmade product store efficiently.
+This ER diagram demonstrates how a database can be designed to support a growing Instagram-based thrift and handmade product store.
+It ensures efficient **product management, order tracking, payment processing, and shipping management**.
 
 ---
 
